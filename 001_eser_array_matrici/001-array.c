@@ -11,8 +11,9 @@
 
 #define R 10
 #define C 10
+#define MAX 100
+#define MIN 0
 #define N 10
-
 //DICHIARAZIONE FUNZIONI
 
 void menu();
@@ -22,15 +23,16 @@ void caricaMatriceM(int [][C],int );
 void caricaMatriceR(int [][C],int );
 void stampaVettore(int [],int );
 void stampaMatrice(int [][C],int );
-int ricercaingenuaMAT(int[], int );
-int ricercaingenuaV(int[], int );
-void ordinamentobMAT(int[]);
-void ordinamentobV(int[]);
+void ordinamentovett_cresc(int [],int );
+void ordinamento_righe(int [][C],int ,int );
+int min(int [][C],int ,int );
+int max(int [][C],int ,int );
+int ricercaingenua(int[],int ,int );
 
 //MAIN
 int main()
 {
-	int v[N],m[R][C],s,b,a;
+	int v[N],m[R][C],s,b,a,r;
 	
 	srand(time(NULL));
 	
@@ -72,16 +74,43 @@ do
 		break;
 		
 		case 7:
-			scanf("%d",&b);
-			a=ricercaingenuaMAT(m,b);
+			printf("inserisci la riga/n");
+			scanf("%d",&a);
+			printf("inserisci il numero da cercare\n");
+			r=ricercaingenua(m[a],R ,b );
+		
 			
 		break;
 		
 		case 8:
-			scanf("%d",&b);
-			a=ricercaingenuaMAT(m,b);
+			printf("inserisci la riga/n");
+			scanf("%d",&a);
+			printf("inserisci il numero da cercare\n");
+			r=ricercaingenua(m[a],R ,b );
+		
 			
 		break;
+		
+		case 9:
+			printf("inserisci la riga/n");
+			scanf("%d",&a);
+			 ordinamento_righe(m, a, C);
+			
+		break;
+		
+		case 10:
+			r=max(m, R, C);
+			printf(" il maggiore:%d\n",r);
+			
+		break;
+		
+			
+		case 11:
+			r=min(m, R, C);
+			printf(" il minore:%d\n",r);
+			
+		break;
+		
 		
 		default:
 			printf("INSERISCI UN NUMERO VALIDO");
@@ -101,10 +130,11 @@ void menu()
 	printf("4: Carica matrice manualmente\n");	
 	printf("5: Stampa vettore\n");	
 	printf("6: Stampa matrice\n");
-	printf("6: ricerca ingenua matrice\n");
-	printf("7: ricerca ingenua vettore\n");
-	printf("8: ordinamento bubblesort matrice\n");
-	printf("9: ordinamento bubblesort matrice\n");
+	printf("7: ricerca ingenua\n");
+	printf("8: ordinamento bubblesort\n");
+	printf("9: ordinamento_righe\n");
+	printf("10: maggiore\n");
+	printf("11: minore\n");
 }
 
 void caricaVettoreM( int v[],int x)
@@ -163,15 +193,87 @@ void stampaMatrice(int m[][C],int x)
 	}
 }
 
-int ricercaingenuaMAT(int m[], int x)
+int ricercaingenua(int vet[],int dim,int x)
 {
 	int i,indice=-1;
+	for(i=0;i<N;i++)
+	{
+		if(vet[i]==x)	
+		{
+			indice=i;
+		}
+		
+	}
+	
+	return indice;
+}
+
+void ordinamento_bubblesort(int vet[],int dim)
+{
+	int temp=0,scambio,i;
+	do{
+		scambio=0;
+		for(i=0;i<N-1;i++)
+		{
+			if(vet[i]>vet[i+1])
+			{
+				dim=vet[i];
+				vet[i]=vet[i+1];
+				vet[i+1]=dim;
+				scambio=1;
+			}
+			
+		}
+		
+	  }while(scambio==1);
+	
+	
+}
+
+void ordinamento_righe(int mat[][C] ,int r ,int c)
+{
+	int i;
+	for(i=0;i<C;i++)
+	{
+		ordinamento_bubblesort(mat[i],c);
+	}
+	
+}
+
+
+
+int max(int mat[][C],int riga,int colonne)
+{
+	int i,j,m=INT_MIN;
 	for(i=0;i<R;i++)
-		{ 
-		  if(m[i]==x)
-		    {
-		    	indice=i;
+	{
+		for(j=0;j<C;j++)
+		{
+			if(mat[i][j]>m)
+			{
+				m=mat[i][j];
 			}
 		}
-		return indice;
+	}
+	
+	return m;
+}
+
+
+
+int min(int mat[][C],int riga,int colonne)
+{
+	int i,j,m=INT_MAX;
+	for(i=0;i<R;i++)
+	{
+		for(j=0;j<C;j++)
+		{
+			if(mat[i][j]<m)
+			{
+				m=mat[i][j];
+			}
+		}
+	}
+	
+	return m;
 }
