@@ -25,6 +25,7 @@ void stampaVettore(int [],int );
 void stampaMatrice(int [][C],int );
 void ordinamentovett_cresc(int [],int );
 void ordinamento_righe(int [][C],int ,int );
+void ordinamento_bubblesort(int v[])
 int min(int [][C],int ,int );
 int max(int [][C],int ,int );
 int ricercaingenua(int[],int ,int );
@@ -83,11 +84,7 @@ do
 		break;
 		
 		case 8:
-			printf("inserisci la riga/n");
-			scanf("%d",&a);
-			printf("inserisci il numero da cercare\n");
-			r=ricercaingenua(m[a],R ,b );
-		
+			ordinamento_bubblesort(v)
 			
 		break;
 		
@@ -193,12 +190,12 @@ void stampaMatrice(int m[][C],int x)
 	}
 }
 
-int ricercaingenua(int vet[],int dim,int x)
+int ricercaingenua(int v[],int dim,int x)
 {
 	int i,indice=-1;
 	for(i=0;i<N;i++)
 	{
-		if(vet[i]==x)	
+		if(v[i]==x)	
 		{
 			indice=i;
 		}
@@ -208,18 +205,18 @@ int ricercaingenua(int vet[],int dim,int x)
 	return indice;
 }
 
-void ordinamento_bubblesort(int vet[],int dim)
+void ordinamento_bubblesort(int v[])
 {
 	int temp=0,scambio,i;
 	do{
 		scambio=0;
 		for(i=0;i<N-1;i++)
 		{
-			if(vet[i]>vet[i+1])
+			if(v[i]>v[i+1])
 			{
-				dim=vet[i];
-				vet[i]=vet[i+1];
-				vet[i+1]=dim;
+				temp=v[i];
+				v[i]=v[i+1];
+				v[i+1]=temp;
 				scambio=1;
 			}
 			
@@ -230,12 +227,12 @@ void ordinamento_bubblesort(int vet[],int dim)
 	
 }
 
-void ordinamento_righe(int mat[][C] ,int r ,int c)
+void ordinamento_righe(int m[][C] ,int r ,int c)
 {
 	int i;
-	for(i=0;i<C;i++)
+	for(i=0;i<c;i++)
 	{
-		ordinamento_bubblesort(mat[i],c);
+		ordinamento_bubblesort(m[i]);
 	}
 	
 }
