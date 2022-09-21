@@ -22,11 +22,15 @@ void caricaMatriceM(int [][C],int );
 void caricaMatriceR(int [][C],int );
 void stampaVettore(int [],int );
 void stampaMatrice(int [][C],int );
+int ricercaingenuaMAT(int[], int );
+int ricercaingenuaV(int[], int );
+void ordinamentobMAT(int[]);
+void ordinamentobV(int[]);
 
 //MAIN
 int main()
 {
-	int v[N],m[R][C],s;
+	int v[N],m[R][C],s,b,a;
 	
 	srand(time(NULL));
 	
@@ -67,6 +71,18 @@ do
 			stampaMatrice(m,R);
 		break;
 		
+		case 7:
+			scanf("%d",&b);
+			a=ricercaingenuaMAT(m,b);
+			
+		break;
+		
+		case 8:
+			scanf("%d",&b);
+			a=ricercaingenuaMAT(m,b);
+			
+		break;
+		
 		default:
 			printf("INSERISCI UN NUMERO VALIDO");
 	}
@@ -85,6 +101,10 @@ void menu()
 	printf("4: Carica matrice manualmente\n");	
 	printf("5: Stampa vettore\n");	
 	printf("6: Stampa matrice\n");
+	printf("6: ricerca ingenua matrice\n");
+	printf("7: ricerca ingenua vettore\n");
+	printf("8: ordinamento bubblesort matrice\n");
+	printf("9: ordinamento bubblesort matrice\n");
 }
 
 void caricaVettoreM( int v[],int x)
@@ -141,4 +161,17 @@ void stampaMatrice(int m[][C],int x)
 	{
 		stampaVettore(m[i],N);	
 	}
+}
+
+int ricercaingenuaMAT(int m[], int x)
+{
+	int i,indice=-1;
+	for(i=0;i<R;i++)
+		{ 
+		  if(m[i]==x)
+		    {
+		    	indice=i;
+			}
+		}
+		return indice;
 }
