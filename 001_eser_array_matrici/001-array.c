@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <limits.h>
 
 #define R 10
 #define C 10
@@ -24,10 +25,10 @@ void caricaMatriceR(int [][C],int );
 void stampaVettore(int [],int );
 void stampaMatrice(int [][C],int );
 void ordinamentovett_cresc(int [],int );
-void ordinamento_righe(int [][C],int ,int );
-void ordinamento_bubblesort(int v[])
-int min(int [][C],int ,int );
-int max(int [][C],int ,int );
+void ordinamento_righe(int [] ,int );
+void ordinamento_bubblesort(int v[]);
+int cercamin(int [][C],int ,int );
+int cercamax(int [][C],int ,int );
 int ricercaingenua(int[],int ,int );
 
 //MAIN
@@ -84,26 +85,26 @@ do
 		break;
 		
 		case 8:
-			ordinamento_bubblesort(v)
+			ordinamento_bubblesort(v);
 			
 		break;
 		
 		case 9:
 			printf("inserisci la riga/n");
 			scanf("%d",&a);
-			 ordinamento_righe(m, a, C);
+			 ordinamento_righe(m[a],C);
 			
 		break;
 		
 		case 10:
-			r=max(m, R, C);
+			r=cercamax(m, R, C);
 			printf(" il maggiore:%d\n",r);
 			
 		break;
 		
 			
 		case 11:
-			r=min(m, R, C);
+			r=cercamin(m, R, C);
 			printf(" il minore:%d\n",r);
 			
 		break;
@@ -130,10 +131,12 @@ void menu()
 	printf("7: ricerca ingenua\n");
 	printf("8: ordinamento bubblesort\n");
 	printf("9: ordinamento_righe\n");
-	printf("10: maggiore\n");
-	printf("11: minore\n");
+	printf("10: trova maggiore\n");
+	printf("11: trova minore\n");
 }
 
+
+//carica il vettore di dimensione x manualmente
 void caricaVettoreM( int v[],int x)
 {
 	int i,a;
@@ -143,7 +146,7 @@ void caricaVettoreM( int v[],int x)
 		v[i]=a;
 	}
 }
-
+//carica il vettore di dimensione x in modo casuale
 void caricaVettoreR(int v[],int x)
 {
 	int i;
@@ -152,7 +155,7 @@ void caricaVettoreR(int v[],int x)
 		v[i]=rand()%100;
 	}
 }
-
+//caica matrice manualmente
 void caricaMatriceM(int m[][C],int x)
 {
 	int i;
@@ -161,7 +164,7 @@ void caricaMatriceM(int m[][C],int x)
 		caricaVettoreM(m[i],N);	
 	}
 }
-
+//carica matrice in modo casuale
 void caricaMatriceR(int m[][C],int x)
 {
 	int i;
@@ -170,7 +173,7 @@ void caricaMatriceR(int m[][C],int x)
 		caricaVettoreR(m[i],N);	
 	}
 }
-
+// stampa il vettore
 void stampaVettore(int v[],int x)
 {
 	int i;
@@ -180,7 +183,7 @@ void stampaVettore(int v[],int x)
 	}
 	printf("\n");
 }
-
+//stampa il vettore
 void stampaMatrice(int m[][C],int x)
 {
 	int i;
@@ -190,24 +193,10 @@ void stampaMatrice(int m[][C],int x)
 	}
 }
 
-int ricercaingenua(int v[],int dim,int x)
-{
-	int i,indice=-1;
-	for(i=0;i<N;i++)
-	{
-		if(v[i]==x)	
-		{
-			indice=i;
-		}
-		
-	}
-	
-	return indice;
-}
-
+//ordinamento del vettore dal minore al maggiore
 void ordinamento_bubblesort(int v[])
 {
-	int temp=0,scambio,i;
+	int temp,scambio=0,i;
 	do{
 		scambio=0;
 		for(i=0;i<N-1;i++)
@@ -226,19 +215,19 @@ void ordinamento_bubblesort(int v[])
 	
 	
 }
-
-void ordinamento_righe(int m[][C] ,int r ,int c)
+//ordinamento della riga(vettore) di una matrice
+void ordinamento_righe(int m[] ,int c)
 {
 	int i;
 	for(i=0;i<c;i++)
 	{
-		ordinamento_bubblesort(m[i]);
+		ordinamento_bubblesort(m);
 	}
 	
 }
 
 
-
+//ricerca dell'elmento piu grande all'interno della matrice
 int max(int mat[][C],int riga,int colonne)
 {
 	int i,j,m=INT_MIN;
@@ -257,7 +246,7 @@ int max(int mat[][C],int riga,int colonne)
 }
 
 
-
+//ricerca dell'elemento piu piccolo dela matrice
 int min(int mat[][C],int riga,int colonne)
 {
 	int i,j,m=INT_MAX;
