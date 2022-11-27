@@ -1,0 +1,42 @@
+//AndreaTansella 4H
+
+#include<stdio.h>
+#include<stdlib.h>
+int main()
+{
+	int cont=0,cont2=0,cont3=0;//contatori
+	FILE *puntaFile;//puntatore del file
+	char s;//stringa per contenere le parole nel file di testo
+	char testo[]={"nomi.txt"};//percoso file lettura
+	
+	puntaFile=fopen(testo,"r");//apertura  file
+	
+	
+	if(puntaFile!=0)// controllo se il file si apre senza problemi
+	{
+		while(!feof(puntaFile))// esegue il ciclo finche non si chiude
+		{
+			s=fgetc(puntaFile);  //prende il carattere	
+			if(s!=' '&& s!='\0'&& s!='\n') //controlla se diverso da cartteri speciali
+			{
+			cont++;//aumenta di uno se e un carattere
+			}
+			if(s==' ')
+			{
+				cont2++;//aumenta di uno se c'e uno spazio tra una parola all'altra
+			}
+			if(s=='\n')
+			{
+				cont3++;//aumenta se va a capo
+			}
+			
+			}
+		printf("Caratteri:%d, Parole:%d, Righe:%d",cont,cont2,cont3);// stampa su monitor 
+	}
+	else 
+	{
+		printf("errore di apertura");//errore di apertura
+	}
+	fclose(puntaFile);//chiusura file
+
+}
