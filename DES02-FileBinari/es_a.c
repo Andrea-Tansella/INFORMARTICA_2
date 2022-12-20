@@ -1,4 +1,5 @@
 
+
 /** ****************************************************************************************
 * \mainpage esercizi File_struct
 *
@@ -40,11 +41,11 @@ int main()
 	char cogn[C];
 
 	
-	//printf("Inserisci quanti record vuoi scrivere\n");
-	//scanf("\n%d",&nRecord);
- 	//inserisciRecord(nomefile,nRecord);
+	printf("Inserisci quanti record vuoi scrivere\n");
+	scanf("\n%d",&nRecord);
+ 	inserisciRecord(nomefile,nRecord);
 	 	
-    stampaFile(nomefile);
+   stampaFile(nomefile);
 	
 	printf("\nQuale cognome vuoi cercare?\n");
 	scanf("%s",cogn);
@@ -84,7 +85,7 @@ void inserisciRecord(char filename[], int numRecord)
 	
 void stampaFile(char fileName[])
 {
-	int j;
+	int j,n;
 	alunno buffer; 
 	FILE*pf;
 	pf=fopen(fileName,"rb");
@@ -92,16 +93,20 @@ void stampaFile(char fileName[])
 	{
 		while(!feof(pf))
 		{
+			n=fread(&buffer,sizeof(alunno),1,pf);
+			if(n>0)
+			{
 			printf("\n\nmatricola\n:%d\n", buffer.matricola);
-			printf("\ncognome:%s\n", buffer.cognome);
-			printf("\ngiorno di nascita%d\n", buffer.nascita.giorno);	// stampa degli elementi all'interno dell'struct
-			printf("\nmese di nascita:%s\n", buffer.nascita.mese);
-			printf("\nanno di nascita:%d\n", buffer.nascita.anno);
+			printf("\tcognome:%s\n", buffer.cognome);
+			printf("\tgiorno di nascita%d\n", buffer.nascita.giorno);	// stampa degli elementi all'interno dell'struct
+			printf("\tmese di nascita:%s\n", buffer.nascita.mese);    // uguale pe la media
+			printf("\tanno di nascita:%d\n", buffer.nascita.anno);
 			for(j=0;j<V;j++)
 				{
-					printf("\nvoti:%d\t",buffer.voti[j]);
+					printf("\nvoti:\t%d\t",buffer.voti[j]);
 				}
-			fread(&buffer,sizeof(alunno),1,pf);
+			fwrite(&buffer,sizeof(alunno),1,pf);
+			}
 		}
 		fclose(pf);
 	}
@@ -121,8 +126,8 @@ int ricercaRecord(char fileName[], char cognome[])
 				while(!feof(pf))
 				{
 					n=fread(&buffer,sizeof(alunno),1,pf);
-					n=strcmp(cognome,buffer.cognome);
-					if(n==0)
+					n=strcmp(cognome,buffer.cognome==0);
+					if(n>0)
 					{
 						printf("%s",buffer.cognome);
 						printf("\t");
@@ -133,10 +138,13 @@ int ricercaRecord(char fileName[], char cognome[])
 								media+=j;
 							}
 							media=media/V;
-							printf("la media:%d",media);
+							printf("\tla media:%d",media);
 					}
 				}fclose (pf);
 		}
 		else
 			printf("errore in apertura file");
 }
+
+	
+	
