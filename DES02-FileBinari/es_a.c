@@ -1,7 +1,6 @@
 
-
 /** ****************************************************************************************
-* \mainpage esercizi Filestruct_AndreaTansella
+* \mainpage esercizi Andrea_filebinari.cpp
 *
 * @brief esecitazione su file binari
 * 
@@ -36,7 +35,7 @@ void ricercaCogn(char [],char []);
 int ricercaRecord(char [], char []);
 int stampaRecord(char [],int );
 int correggiRecord(char [], int );
-
+int numeroRecord(char []);
 
 int main()
 {
@@ -45,7 +44,7 @@ int main()
 	char cogn[C];
 	
 	do
-{
+	{
 		menu();
 		scanf("%d",&s);
 	
@@ -79,48 +78,13 @@ int main()
 				scanf("%d",&pos2);
 				c=correggiRecord(nomefile,pos2);
 				break;	
-		
-	/*	scanf("%d",&s);
-		switch(s)
-		{
-		case 1:
-			printf("Su quanti record vuoi lavorare? ");
-			scanf("%d",&nRecord);
-			inserisciRecord(nomeFile,numRecord);
-		break;
-		
-		case 2:
-			stampaFile(nomeFile);
-		break
-		;
-		case 3:
-			printf("Inserisci il cognome dello studente da cercare");
-			scanf("%s",cognome);
-			ricercaRecord(nomeFile,cognome);
-		break;
-	
-		case 4:
-			printf("Quale posizione del record vuoi stampare?");
-			scanf("%d",&posizione);
-			f1=stampaRecord(nomeFile,posizione);
-		break;
-		
-		case 5:
-			printf("Quale posizione del record vuoi correggere?");
-			scanf("%d",&posizione2);
-			f2=correggiRecord(nomeFile,posizione2);
-		break;
-		
-		case 6:
-			f3=numeroRecord(nomeFile);
-		break;
-		}*/
+			case 6:
+			a=numeroRecord(nomefile);
+			printf("nel file ci sono %d record\n",a);	
 		}
 
-	}
-	while(s!=0);
+	}while(s!=0);
 }
-
 
 
 
@@ -135,10 +99,20 @@ void menu(void)
 	printf("\n6:numeroRecord\n");
 	printf("0:chiudi il programma\n");
 }
+
+/** ****************************************************************************************
+* @brief <inserimento degli elementi in un file di record>
+* @param  (char fileName[], int numRecord)
+* @retval <nessuna>
+* @see 
+*
+* @author Andrea Tansella
+* @data<01/12/2022> 
+*/
 void inserisciRecord(char filename[], int numRecord)
 {
 	int i,j;
-	alunno buffer;
+	alunno buffer;						// dichiarazione interi ,puntatori,apertura del file e struct buffer
 	FILE*pf;
 
 	pf=fopen(filename,"ab");
@@ -158,31 +132,37 @@ void inserisciRecord(char filename[], int numRecord)
 				printf("\ninserisci i voti\n");
 				scanf("%d",&buffer.voti[j]);	
 			}
-			fwrite(&buffer,sizeof(alunno),1,pf);
+			fwrite(&buffer,sizeof(alunno),1,pf);// scrive dopra il record esistente
 		}	
 		fclose(pf);
 	}
 	else
 		printf("il file non puo esere aperto");
 }
-	
+
+/** ****************************************************************************************
+* @brief stampa delle informazioni di un file di record>
+* @param  (char fileName[])
+* @author Andrea Tansella
+* @data<01/12/2022> 
+*/	
 void stampaFile(char fileName[])
 {
 	int j,n;
 	alunno buffer; 
-	FILE*pf;
+	FILE*pf;						// dichiarazione interi ,puntatori,apertura del file e struct buffer
 	pf=fopen(fileName,"rb");
 	if(pf!=0)
 	{
 		while(!feof(pf))
 		{
-			n=fread(&buffer,sizeof(alunno),1,pf);
+			n=fread(&buffer,sizeof(alunno),1,pf);//tira fuori il record dal file per lavorarci sopra 
 			if(n>0)
 			{
 			printf("\n\nmatricola\n:%d\n", buffer.matricola);
 			printf("\ncognome:%s\n", buffer.cognome);
 			printf("\ngiorno di nascita:%d\n", buffer.nascita.giorno);	// stampa degli elementi all'interno dell'struct
-			printf("\nmese di nascita:%s\n", buffer.nascita.mese);    // uguale pe la media
+			printf("\nmese di nascita:%s\n", buffer.nascita.mese);    
 			printf("\nanno di nascita:%d\n", buffer.nascita.anno);
 			for(j=0;j<V;j++)
 				{
@@ -197,23 +177,29 @@ void stampaFile(char fileName[])
 	printf("il file non puo esere aperto");
 }
 
-
+/** ****************************************************************************************
+* @brief cerca il cognome richiesto dall'utente e ne stampa il cognome l'eta' e la media dei voti
+* @param char fileName[], char cognaome)
+*
+* @author Andrea Tansella
+* @data 01/12/22
+*/
 int ricercaRecord(char fileName[], char cognome[])
 {
 		int i,j, eta, media=0,n,a;
 		alunno buffer;
-		FILE*pf;
+		FILE*pf;						// dichiarazione interi ,puntatori,apertura del file e struct buffer
 		pf=fopen(fileName,"rb");
 		if(pf!=0)
 		{
 				while(!feof(pf))
 				{
-					n=fread(&buffer,sizeof(alunno),1,pf);
-					if(strcmp(cognome,buffer.cognome)==0)
+					n=fread(&buffer,sizeof(alunno),1,pf);//tira fuori il record dal file per lavorarci sopra 
+					if(strcmp(cognome,buffer.cognome)==0) //confronto cognome da cercare con il dato dello struct
 					{
 						printf("%s",buffer.cognome);
 						printf("\t");
-						eta=2022-buffer.nascita.anno;
+						eta=2022-buffer.nascita.anno;//calcolo data di nascita 
 						printf("eta'alunno:%d",eta);
 						for(j=0;j<V;j++)
 							{
@@ -222,6 +208,7 @@ int ricercaRecord(char fileName[], char cognome[])
 							media=media/V;
 							printf("\tla media:%d",media);
 					}
+					printf("\n");
 				}
 				fclose (pf);
 		}
@@ -229,19 +216,25 @@ int ricercaRecord(char fileName[], char cognome[])
 			printf("errore in apertura file");
 }
 
-
+/** ****************************************************************************************
+* @brief stampa i dati del record che viene chiesto all'utente
+* @param (char fileName[], int posizione)
+*
+* @author Andrea Tansella
+* @data 01/12/22
+*/
 int stampaRecord(char nomeFile[],int posizione)
 {
 	int i,media,j,n,f;
 	FILE *pf;
-	alunno buffer;
+	alunno buffer;					// dichiarazione interi ,puntatori,apertura del file e struct buffer
 	pf=fopen(nomeFile,"rb");
 	
 	if(pf!=0)
 	{
 	
-		f=fseek(pf,posizione*sizeof(alunno),SEEK_SET);// posiziono sullo struct richiesto
-			n=fread(&buffer,sizeof(alunno),1,pf);
+		f=fseek(pf,posizione*sizeof(alunno),SEEK_SET);//posiziona il puntatore all'inizio grazie al SEEK_SET
+			n=fread(&buffer,sizeof(alunno),1,pf);		//tira fuori il record dal file per lavorarci sopra 
 
 			printf("%d",buffer.matricola);
 			for(j=0;j<V;j++)
@@ -249,8 +242,8 @@ int stampaRecord(char nomeFile[],int posizione)
 				media+=j;
 			}
 			media=media/V;
-			printf("Media dello studente:%d\n",media);
-			printf("\nCognome dello studente:%s\n",buffer.cognome );
+			printf("Media dello studente: %d\n",media);						//inserimento dati dello struct
+			printf("\nCognome dello studente: %s\n",buffer.cognome );
 			printf("\nData di nascita dello studente:%d %s %d", &buffer.nascita.giorno, buffer.nascita.mese, &buffer.nascita.anno);
 			printf("%d %s %d", &buffer.nascita.giorno, buffer.nascita.mese, &buffer.nascita.anno);
 			f=fseek(pf,posizione*sizeof(alunno),SEEK_SET);
@@ -259,49 +252,82 @@ int stampaRecord(char nomeFile[],int posizione)
 	}
 	else
 	{
-		return -1;
 		printf("\nIL FILE NON PUO' ESSERE APERTO!");
 	}
 }
-
-int correggiRecord(char nomeFile[], int posizione)
+/** ****************************************************************************************
+* @brief <controlla la posizione del record chiesto all'utente e modifica gli errori
+* @param (char fileName[], int posizione)
+*																							NON FUNZIONA
+* @author Andrea Tansella
+* @data 01/12/22
+*/
+int correggiRecord(char nomefile[], int posizione)
 {
-    int a,f,i;                          
-	FILE *pf;
-	alunno buffer;
-	pf=fopen(nomeFile,"rb");
-	
-    if(pf!=0)                         
-    {   
-        f=fseek(pf,posizione*sizeof(alunno),SEEK_SET);
-
-        if(f==0)
-        {
-            a=stampaRecord(nomeFile,posizione);
-            printf("\n INSERISCI LE CORREZZIONI: \n");
-            printf("Inserisci il numero di matricola: ");
-			scanf("%d",&buffer.matricola);
-			printf("Inserisci 5 voti dello studente: ");
-				printf("\nInserisci il cognome dello studente: ");
-			scanf("%s",buffer.cognome); 
-			printf("\nInserisci il giorno di nascita dello studente: ");
-			scanf("%d",&buffer.nascita.giorno); 
-			printf("\nInserisci il mese di nascita dello studente: ");
-			scanf("%s",buffer.nascita.mese);
-			printf("\nInserisci l'anno di nascita dello studente: ");
-			scanf("%d",&buffer.nascita.anno);
-			for(i=0;i<V;i++) // ciclo inserimento voti
+									
+	alunno buffer;										//dichiarazione di un record
+	int n,f, b;											//interi utilizzato per funzionare di funzioni di file
+	FILE* pf;											
+	pf=fopen(nomefile,"rb");									
+	if(pf!=NULL)									
+	{
+		n=fseek(pf,posizione*sizeof(buffer),SEEK_SET);	//posiziona il puntatore all'inizio grazie al SEEK_SET
+		if(n!=-1)							
+		{
+			f=fread(&buffer,sizeof(buffer),1,pf);		//tira fuori il record dal file per lavorarci sopra 
+			if(f!=0)
 			{
-				scanf("%d",&buffer.voti[i]);
+				printf("inserisci cognome:");
+				scanf("%s", buffer.cognome);
+				printf("inserisci data di nascita:\n");
+				printf("giorno:");
+				scanf("%d",&buffer.nascita.giorno);		//inserimento dati degli struct
+				printf("mese:");
+				scanf("%s",buffer.nascita.mese);
+				printf("anno:");
+				scanf("%d",&buffer.nascita.anno);
+				for(int j=0;j<V;j++)
+				{
+					buffer.voti[j];			
+				}                              
+				printf("\n");
+				b=fwrite(&buffer,sizeof(buffer),1,pf);//sovrascrive il record esistente con il record corretto
+				fclose(pf);							//chude il file
+				return b;
 			}
-		
-            f=fseek(pf,posizione*sizeof(alunno),SEEK_SET);   
-            fwrite(&buffer,sizeof(alunno),1,pf); 
-        }
-        fclose(pf);
-    }
-    else
-		printf("\nIL FILE NON PUO' ESSERE APERTO!");
+				else														
+				{
+				printf("\nil file non puo'essere aperto\n");
+				}
+		}
+
+	}
 }
-	
-	
+/** ****************************************************************************************
+* @brief restituisce il numero di record
+* @param (char fileName[])
+*
+* @author Andrea Tansella
+* @data 01/12/22
+*/
+	int numeroRecord(char nomefile[])
+{
+	alunno buffer;										//dichiarazione di un record
+	int a,r,b,record;									//dichiarazioni interi utilizzati
+	int n=sizeof(buffer);								//grandezza del record		
+	FILE* pf;										
+	pf=fopen(nomefile,"rb");							
+	if(pf!=NULL)									
+	{
+		a=fseek(pf,0,SEEK_END);							//mette puntatore alla fine del file per poi calcolare la lunghezza 
+		b=ftell(pf);									//restituisce la posizione corrente del file in byte
+		record=b/n;									 	//divido b con la dimenzione di buffer per trovare il numero di record presenti
+		fclose(pf);									
+		return record;							
+	}
+	else														
+	{
+		printf("\nil file non puo'essere aperto\n");
+	}
+}
+
