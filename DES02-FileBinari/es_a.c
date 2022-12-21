@@ -225,7 +225,7 @@ int ricercaRecord(char fileName[], char cognome[])
 * @param (char fileName[], int posizione)
 *
 * @author Andrea Tansella
-* @data 01/12/22
+* @data 01/12/22                                                           //il secondo non viene stampato correttamente
 */
 int stampaRecord(char nomeFile[],int posizione)
 {
@@ -243,7 +243,7 @@ int stampaRecord(char nomeFile[],int posizione)
 			printf("%d",buffer.matricola);
 			for(j=0;j<V;j++)
 			{
-				media+=j;
+				media+=buffer.voti[j];
 			}
 			media=media/V;
 			printf("\nMedia dello studente: %d\n",media);						//inserimento dati dello struct
@@ -261,7 +261,7 @@ int stampaRecord(char nomeFile[],int posizione)
 /** ****************************************************************************************
 * @brief <controlla la posizione del record chiesto all'utente e modifica gli errori
 * @param (char fileName[], int posizione)
-*																							NON FUNZIONA
+*																							NON FUNZIONA permette di modificare ma non salva
 * @author Andrea Tansella
 * @data 01/12/22
 */
@@ -271,7 +271,7 @@ int correggiRecord(char nomefile[], int posizione)
 	alunno buffer;										//dichiarazione di un record
 	int n,f,b,j,a;											//interi utilizzato per funzionare di funzioni di file
 	FILE* pf;											
-	pf=fopen(nomefile,"rb");									
+	pf=fopen(nomefile,"wb");									
 	if(pf!=NULL)									
 	{
 		n=fseek(pf,posizione*sizeof(buffer),SEEK_SET);	//posiziona il puntatore all'inizio grazie al SEEK_SET
@@ -336,4 +336,3 @@ int correggiRecord(char nomefile[], int posizione)
 		printf("\nil file non puo'essere aperto\n");
 	}
 }
-
