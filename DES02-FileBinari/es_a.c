@@ -1,4 +1,3 @@
-
 /** ****************************************************************************************
 * \mainpage esercizi Andrea_filebinari.cpp
 *
@@ -186,7 +185,7 @@ void stampaFile(char fileName[])
 */
 int ricercaRecord(char fileName[], char cognome[])
 {
-		int i,j, eta, media=0,n,a;
+		int i,j, eta, media=0,n,a,b;
 		alunno buffer;
 		FILE*pf;						// dichiarazione interi ,puntatori,apertura del file e struct buffer
 		pf=fopen(fileName,"rb");
@@ -194,21 +193,26 @@ int ricercaRecord(char fileName[], char cognome[])
 		{
 				while(!feof(pf))
 				{
+					b=0;
 					n=fread(&buffer,sizeof(alunno),1,pf);//tira fuori il record dal file per lavorarci sopra 
-					if(strcmp(cognome,buffer.cognome)==0) //confronto cognome da cercare con il dato dello struct
+					if(n>0)
 					{
-						printf("%s",buffer.cognome);
-						printf("\t");
-						eta=2022-buffer.nascita.anno;//calcolo data di nascita 
-						printf("eta'alunno:%d",eta);
-						for(j=0;j<V;j++)
-							{
-								media+=j;
-							}
-							media=media/V;
-							printf("\tla media:%d",media);
-					}
-					printf("\n");
+					
+				    	if(strcmp(cognome,buffer.cognome)==0) //confronto cognome da cercare con il dato dello struct
+				     	{
+							printf("%s",buffer.cognome);
+							printf("\t");
+							eta=2022-buffer.nascita.anno;//calcolo data di nascita 
+							printf("eta'alunno:%d",eta);
+							for(j=0;j<V;j++)
+								{
+									b=media+buffer.voti[j];
+								}
+								media=b/V;
+								printf("\tla media:%d",media);
+						}
+					    printf("\n");
+					 }	
 				}
 				fclose (pf);
 		}
@@ -242,10 +246,9 @@ int stampaRecord(char nomeFile[],int posizione)
 				media+=j;
 			}
 			media=media/V;
-			printf("Media dello studente: %d\n",media);						//inserimento dati dello struct
+			printf("\nMedia dello studente: %d\n",media);						//inserimento dati dello struct
 			printf("\nCognome dello studente: %s\n",buffer.cognome );
-			printf("\nData di nascita dello studente:%d %s %d", &buffer.nascita.giorno, buffer.nascita.mese, &buffer.nascita.anno);
-			printf("%d %s %d", &buffer.nascita.giorno, buffer.nascita.mese, &buffer.nascita.anno);
+			printf("\nData di nascita dello studente:%d %s %d", buffer.nascita.giorno, buffer.nascita.mese, buffer.nascita.anno);
 			f=fseek(pf,posizione*sizeof(alunno),SEEK_SET);
 		fclose(pf);
 		return 0;
@@ -266,7 +269,7 @@ int correggiRecord(char nomefile[], int posizione)
 {
 									
 	alunno buffer;										//dichiarazione di un record
-	int n,f, b;											//interi utilizzato per funzionare di funzioni di file
+	int n,f,b,j,a;											//interi utilizzato per funzionare di funzioni di file
 	FILE* pf;											
 	pf=fopen(nomefile,"rb");									
 	if(pf!=NULL)									
@@ -277,7 +280,8 @@ int correggiRecord(char nomefile[], int posizione)
 			f=fread(&buffer,sizeof(buffer),1,pf);		//tira fuori il record dal file per lavorarci sopra 
 			if(f!=0)
 			{
-				printf("inserisci cognome:");
+				a=stampaRecord(nomefile,posizione);
+				printf("\ninserisci cognome:");
 				scanf("%s", buffer.cognome);
 				printf("inserisci data di nascita:\n");
 				printf("giorno:");
@@ -286,14 +290,14 @@ int correggiRecord(char nomefile[], int posizione)
 				scanf("%s",buffer.nascita.mese);
 				printf("anno:");
 				scanf("%d",&buffer.nascita.anno);
-				printf("inserisci 8 voti:")
+				printf("inserisci 8 voti:");
 				for(int j=0;j<V;j++)
 				{
-					printf("voto:")
+					printf("voto:");
 					scanf("%d",&buffer.voti[j]);			
 				}                              
 				printf("\n");
-				b=fwrite(&buffer,sizeof(buffer),1,pf);//sovrascrive il record esistente con il record corretto
+				n=fwrite(&buffer,sizeof(buffer),1,pf);//sovrascrive il record esistente con il record corretto
 				fclose(pf);							//chude il file
 				return b;
 			}
@@ -323,7 +327,7 @@ int correggiRecord(char nomefile[], int posizione)
 	{
 		a=fseek(pf,0,SEEK_END);							//mette puntatore alla fine del file per poi calcolare la lunghezza 
 		b=ftell(pf);									//restituisce la posizione corrente del file in byte
-		record=b/n;									 	//divido b con la dimenzione di buffer per trovare il numero di record presenti
+		record=b/y;									 	//divido b con la dimenzione di buffer per trovare il numero di record presenti
 		fclose(pf);									
 		return record;							
 	}
