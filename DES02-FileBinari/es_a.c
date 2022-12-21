@@ -286,9 +286,11 @@ int correggiRecord(char nomefile[], int posizione)
 				scanf("%s",buffer.nascita.mese);
 				printf("anno:");
 				scanf("%d",&buffer.nascita.anno);
+				printf("inserisci 8 voti:")
 				for(int j=0;j<V;j++)
 				{
-					buffer.voti[j];			
+					printf("voto:")
+					scanf("%d",&buffer.voti[j]);			
 				}                              
 				printf("\n");
 				b=fwrite(&buffer,sizeof(buffer),1,pf);//sovrascrive il record esistente con il record corretto
@@ -313,9 +315,9 @@ int correggiRecord(char nomefile[], int posizione)
 	int numeroRecord(char nomefile[])
 {
 	alunno buffer;										//dichiarazione di un record
-	int a,r,b,record;									//dichiarazioni interi utilizzati
-	int n=sizeof(buffer);								//grandezza del record		
-	FILE* pf;										
+	int a,r,b,record,y;									//dichiarazioni interi utilizzati								//grandezza del record		
+	FILE* pf;	
+	 y=sizeof(buffer);								
 	pf=fopen(nomefile,"rb");							
 	if(pf!=NULL)									
 	{
