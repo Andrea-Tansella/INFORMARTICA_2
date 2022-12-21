@@ -1,5 +1,7 @@
-/** ****************************************************************************************
-* \mainpage esercizi Andrea_filebinari.cpp
+
+
+/*** ****************************************************************************************
+* mainpage esercizi Tansella_fileBinari.cpp
 *
 * @brief esecitazione su file binari
 * 
@@ -131,7 +133,7 @@ void inserisciRecord(char filename[], int numRecord)
 				printf("\ninserisci i voti\n");
 				scanf("%d",&buffer.voti[j]);	
 			}
-			fwrite(&buffer,sizeof(alunno),1,pf);// scrive dopra il record esistente
+			fwrite(&buffer,sizeof(alunno),1,pf);// scrive sopra il record esistente
 		}	
 		fclose(pf);
 	}
@@ -180,20 +182,21 @@ void stampaFile(char fileName[])
 * @brief cerca il cognome richiesto dall'utente e ne stampa il cognome l'eta' e la media dei voti
 * @param char fileName[], char cognaome)
 *
-* @author Andrea Tansella
+* @author Andrea Tansella							//tutto funzionante tranne calcolo della media
 * @data 01/12/22
 */
 int ricercaRecord(char fileName[], char cognome[])
 {
-		int i,j, eta, media=0,n,a,b;
+		int i,j, eta, media=0,n,a,conta;
 		alunno buffer;
 		FILE*pf;						// dichiarazione interi ,puntatori,apertura del file e struct buffer
 		pf=fopen(fileName,"rb");
 		if(pf!=0)
 		{
+		
 				while(!feof(pf))
 				{
-					b=0;
+					conta==0;
 					n=fread(&buffer,sizeof(alunno),1,pf);//tira fuori il record dal file per lavorarci sopra 
 					if(n>0)
 					{
@@ -206,9 +209,10 @@ int ricercaRecord(char fileName[], char cognome[])
 							printf("eta'alunno:%d",eta);
 							for(j=0;j<V;j++)
 								{
-									b=media+buffer.voti[j];
+									
+									conta=media+buffer.voti[j];
 								}
-								media=b/V;
+								media=conta/V;
 								printf("\tla media:%d",media);
 						}
 					    printf("\n");
@@ -225,30 +229,30 @@ int ricercaRecord(char fileName[], char cognome[])
 * @param (char fileName[], int posizione)
 *
 * @author Andrea Tansella
-* @data 01/12/22                                                           //il secondo non viene stampato correttamente
+* @data 01/12/22                                                           //tutto funzionante tranne calcolo media
 */
 int stampaRecord(char nomeFile[],int posizione)
 {
-	int i,media,j,n,f;
+	int i,media,j,n,f,conta;
 	FILE *pf;
 	alunno buffer;					// dichiarazione interi ,puntatori,apertura del file e struct buffer
 	pf=fopen(nomeFile,"rb");
 	
 	if(pf!=0)
 	{
-	
+	conta==0;
 		f=fseek(pf,posizione*sizeof(alunno),SEEK_SET);//posiziona il puntatore all'inizio grazie al SEEK_SET
 			n=fread(&buffer,sizeof(alunno),1,pf);		//tira fuori il record dal file per lavorarci sopra 
 
-			printf("%d",buffer.matricola);
+			printf("\nla matricola: %d",buffer.matricola);
 			for(j=0;j<V;j++)
 			{
-				media+=buffer.voti[j];
+				buffer.voti[j];
 			}
 			media=media/V;
 			printf("\nMedia dello studente: %d\n",media);						//inserimento dati dello struct
-			printf("\nCognome dello studente: %s\n",buffer.cognome );
-			printf("\nData di nascita dello studente:%d %s %d", buffer.nascita.giorno, buffer.nascita.mese, buffer.nascita.anno);
+			printf("Cognome dello studente: %s",buffer.cognome );
+			printf("\nData di nascita dello studente:%d %s %d\n", buffer.nascita.giorno, buffer.nascita.mese, buffer.nascita.anno);
 			f=fseek(pf,posizione*sizeof(alunno),SEEK_SET);
 		fclose(pf);
 		return 0;
@@ -261,7 +265,7 @@ int stampaRecord(char nomeFile[],int posizione)
 /** ****************************************************************************************
 * @brief <controlla la posizione del record chiesto all'utente e modifica gli errori
 * @param (char fileName[], int posizione)
-*																							NON FUNZIONA permette di modificare ma non salva
+*																						//non funzionante da come erropre il non poter aprire il file
 * @author Andrea Tansella
 * @data 01/12/22
 */
@@ -272,15 +276,16 @@ int correggiRecord(char nomefile[], int posizione)
 	int n,f,b,j,a;											//interi utilizzato per funzionare di funzioni di file
 	FILE* pf;											
 	pf=fopen(nomefile,"wb");									
-	if(pf!=NULL)									
+	if(pf!=0)									
 	{
 		n=fseek(pf,posizione*sizeof(buffer),SEEK_SET);	//posiziona il puntatore all'inizio grazie al SEEK_SET
-		if(n!=-1)							
-		{
+									
+		
 			f=fread(&buffer,sizeof(buffer),1,pf);		//tira fuori il record dal file per lavorarci sopra 
 			if(f!=0)
 			{
 				a=stampaRecord(nomefile,posizione);
+				printf("inserisci le correzioni");
 				printf("\ninserisci cognome:");
 				scanf("%s", buffer.cognome);
 				printf("inserisci data di nascita:\n");
@@ -299,13 +304,13 @@ int correggiRecord(char nomefile[], int posizione)
 				printf("\n");
 				n=fwrite(&buffer,sizeof(buffer),1,pf);//sovrascrive il record esistente con il record corretto
 				fclose(pf);							//chude il file
-				return b;
+				
 			}
 				else														
 				{
 				printf("\nil file non puo'essere aperto\n");
 				}
-		}
+		
 
 	}
 }
