@@ -10,7 +10,6 @@
 */
 #include <stdio.h>//utilizzato per imput e output
 #include <string.h>//utilizzo funzioni stringhe
-
 #define V 8
 #define C 20
 
@@ -173,7 +172,7 @@ void stampaFile(char fileName[])
 			}
 		}
 		fclose(pf);
-	}
+ }
 		else
 	printf("il file non puo esere aperto");
 }
@@ -203,7 +202,7 @@ int ricercaRecord(char fileName[], char cognome[])
 					
 				    	if(strcmp(cognome,buffer.cognome)==0) //confronto cognome da cercare con il dato dello struct
 				     	{
-							printf("%s",buffer.cognome);
+							printf("\n%s",buffer.cognome);
 							printf("\t");
 							eta=2022-buffer.nascita.anno;//calcolo data di nascita 
 							printf("eta'alunno:%d",eta);
@@ -259,13 +258,13 @@ int stampaRecord(char nomeFile[],int posizione)
 	}
 	else
 	{
-		printf("\nIL FILE NON PUO' ESSERE APERTO!");
+		return -1;
 	}
 }
 /** ****************************************************************************************
 * @brief <controlla la posizione del record chiesto all'utente e modifica gli errori
 * @param (char fileName[], int posizione)
-*																						//non funzionante da come erropre il non poter aprire il file
+*																						// non corregge il record, calcolo media sbagliata
 * @author Andrea Tansella
 * @data 01/12/22
 */
@@ -275,7 +274,7 @@ int correggiRecord(char nomefile[], int posizione)
 	alunno buffer;										//dichiarazione di un record
 	int n,f,b,j,a;											//interi utilizzato per funzionare di funzioni di file
 	FILE* pf;											
-	pf=fopen(nomefile,"wb");									
+	pf=fopen(nomefile,"rb");									
 	if(pf!=0)									
 	{
 		n=fseek(pf,posizione*sizeof(buffer),SEEK_SET);	//posiziona il puntatore all'inizio grazie al SEEK_SET
