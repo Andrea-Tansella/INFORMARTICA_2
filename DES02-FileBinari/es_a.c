@@ -50,37 +50,34 @@ int main()
 	
 		switch(s)
 		{
-			
 			case 1:
 				printf("Inserisci quanti record vuoi scrivere\n");
 				scanf("\n%d",&nRecord);
 			 	inserisciRecord(nomefile,nRecord);
 				break;	
-				
 			case 2:
 				stampaFile(nomefile);
 				break;
-				
 			case 3:
 				printf("Quale cognome vuoi cercare?\n");
 				scanf("%s",cogn);
 				a=ricercaRecord(nomefile, cogn);	
-					break;
-				
+				break;
 			case 4:
 				printf("Quale posizione del record vuoi stampare?\n");
 				scanf("%d",&pos);
 				f=stampaRecord(nomefile,pos);
 				break;
-				
 			case 5:
 				printf("Quale posizione del record vuoi correggere?\n");
 				scanf("%d",&pos2);
 				c=correggiRecord(nomefile,pos2);
 				break;	
 			case 6:
-			a=numeroRecord(nomefile);
-			printf("nel file ci sono %d record\n",a);	
+				a=numeroRecord(nomefile);
+				if(a!=-1) {
+					printf("nel file ci sono %d record\n",a);
+				}	
 		}
 
 	}while(s!=0);
@@ -271,7 +268,6 @@ int stampaRecord(char nomeFile[],int posizione)
 */
 int correggiRecord(char nomefile[], int posizione)
 {
-									
 	alunno buffer;										//dichiarazione di un record
 	int n,f,b,j,a;
 	a=stampaRecord(nomefile,posizione);	
@@ -284,29 +280,29 @@ int correggiRecord(char nomefile[], int posizione)
 	{
 		n=fseek(pf,posizione*sizeof(buffer),SEEK_SET);	//posiziona il puntatore sul record da correggere
 									
-				printf("inserisci le correzioni");
-				printf("inserisci la matricola\n");
-				scanf("%d",&buffer.matricola);
-				printf("\ninserisci cognome:");
-				scanf("%s", buffer.cognome);
-				printf("inserisci data di nascita:\n");
-				printf("giorno:");
-				scanf("%d",&buffer.nascita.giorno);		//inserimento dati degli struct
-				printf("mese:");
-				scanf("%s",buffer.nascita.mese);
-				printf("anno:");
-				scanf("%d",&buffer.nascita.anno);
-				printf("inserisci 8 voti:");
-				for(int j=0;j<V;j++)
-				{
-					printf("voto:");
-					scanf("%d",&buffer.voti[j]);			
-				}                              
-				printf("\n");
-				
-				n=fwrite(&buffer,sizeof(buffer),1,pf);//sovrascrive il record esistente con il record corretto
-			fclose(pf);							//chude il file
-				
+		printf("inserisci le correzioni");
+		printf("inserisci la matricola\n");
+		scanf("%d",&buffer.matricola);
+		printf("\ninserisci cognome:");
+		scanf("%s", buffer.cognome);
+		printf("inserisci data di nascita:\n");
+		printf("giorno:");
+		scanf("%d",&buffer.nascita.giorno);		//inserimento dati degli struct
+		printf("mese:");
+		scanf("%s",buffer.nascita.mese);
+		printf("anno:");
+		scanf("%d",&buffer.nascita.anno);
+		printf("inserisci 8 voti:");
+		for(int j=0;j<V;j++)
+		{
+			printf("voto:");
+			scanf("%d",&buffer.voti[j]);			
+		}                              
+		printf("\n");
+		
+		n=fwrite(&buffer,sizeof(buffer),1,pf);//sovrascrive il record esistente con il record corretto
+		fclose(pf);							//chude il file
+			
 	}
 	else														
 	{
@@ -317,28 +313,32 @@ int correggiRecord(char nomefile[], int posizione)
 }
 /** ****************************************************************************************
 * @brief restituisce il numero di record
-* @param (char fileName[])
+* @param char fileName[] - nome del file da aprire
 *
 * @author Andrea Tansella
 * @data 01/12/22
 */
-	int numeroRecord(char nomefile[])
+int numeroRecord(char nomefile[])
 {
-	alunno buffer;										//dichiarazione di un record
-	int a,r,b,record,y;									//dichiarazioni interi utilizzati								//grandezza del record		
+	alunno buffer;
+	int a,r,b,record,y;
 	FILE* pf;	
-	 y=sizeof(buffer);								
+	y=sizeof(buffer);								
+	
 	pf=fopen(nomefile,"rb");							
 	if(pf!=NULL)									
 	{
-		a=fseek(pf,0,SEEK_END);							//mette puntatore alla fine del file per poi calcolare la lunghezza 
-		b=ftell(pf);									//restituisce la posizione corrente del file in byte
-		record=b/y;									 	//divido b con la dimenzione di buffer per trovare il numero di record presenti
+		//individuo la posizione corrente (b)
+		//e determino il numero di record presenti (record) 
+		a=fseek(pf,0,SEEK_END);	//mette puntatore alla fine del file per poi calcolare la lunghezza 
+		b=ftell(pf);			//restituisce la posizione corrente del file in byte
+		record=b/y;				//divido b con la dimenzione di buffer per trovare il numero di record presenti
 		fclose(pf);									
 		return record;							
 	}
 	else														
 	{
 		printf("\nil file non puo'essere aperto\n");
+		return -1;
 	}
 }
