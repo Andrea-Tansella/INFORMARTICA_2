@@ -121,11 +121,11 @@ void inserisciRecord(char filename[], int numRecord)
 		for(i=0;i<numRecord;i++)
 		{
 			printf("inserisci la matricola\n");
-			scanf("\n%d",&buffer.matricola);
+			scanf("%d",&buffer.matricola);
 			printf("\ninserisci il cognome\n");				// inserimento degli elementi all'interno dello struct
-			scanf("\n%s",buffer.cognome);
+			scanf("%s",buffer.cognome);
 			printf("\ninserisci il giorno,il mese e anno di nascita\n");
-			scanf("%d %s %d",&buffer.nascita.giorno,buffer.nascita.mese,&buffer.nascita.anno);
+			scanf("%d%s%d",&buffer.nascita.giorno,buffer.nascita.mese,&buffer.nascita.anno);
 			
 			for(j=0;j<V;j++)
 			{
@@ -186,7 +186,8 @@ void stampaFile(char fileName[])
 */
 int ricercaRecord(char fileName[], char cognome[])
 {
-		int i,j, eta, media=0,n,a,conta;
+		int i,j, eta,n,a;
+		float media;
 		alunno buffer;
 		FILE*pf;						// dichiarazione interi ,puntatori,apertura del file e struct buffer
 		pf=fopen(fileName,"rb");
@@ -195,7 +196,7 @@ int ricercaRecord(char fileName[], char cognome[])
 		
 				while(!feof(pf))
 				{
-					conta==0;
+				
 					n=fread(&buffer,sizeof(alunno),1,pf);//tira fuori il record dal file per lavorarci sopra 
 					if(n>0)
 					{
@@ -209,10 +210,10 @@ int ricercaRecord(char fileName[], char cognome[])
 							for(j=0;j<V;j++)
 								{
 									
-									conta=media+buffer.voti[j];
+									media+=buffer.voti[j];
 								}
-								media=conta/V;
-								printf("\tla media:%d",media);
+								media=media/8.0;                   //per far diventare il valore media float(calcola con numeri decimale)
+								printf("\tla media:%.1f",media);
 						}
 					    printf("\n");
 					 }	
@@ -232,24 +233,24 @@ int ricercaRecord(char fileName[], char cognome[])
 */
 int stampaRecord(char nomeFile[],int posizione)
 {
-	int i,media,j,n,f,conta;
+	int i,j,n,f;
+	float media;
 	FILE *pf;
 	alunno buffer;					// dichiarazione interi ,puntatori,apertura del file e struct buffer
 	pf=fopen(nomeFile,"rb");
 	
 	if(pf!=0)
 	{
-	conta==0;
 		f=fseek(pf,posizione*sizeof(alunno),SEEK_SET);//posiziona il puntatore all'inizio grazie al SEEK_SET
 			n=fread(&buffer,sizeof(alunno),1,pf);		//tira fuori il record dal file per lavorarci sopra 
 
 			printf("\nla matricola: %d",buffer.matricola);
 			for(j=0;j<V;j++)
 			{
-				buffer.voti[j];
+				media+=buffer.voti[j];
 			}
-			media=media/V;
-			printf("\nMedia dello studente: %d\n",media);						//inserimento dati dello struct
+			media=media/8.0;					//per far diventare il valore media float(calcola con numeri decimale)
+			printf("\nMedia dello studente: %.1f\n",media);						//inserimento dati dello struct
 			printf("Cognome dello studente: %s",buffer.cognome );
 			printf("\nData di nascita dello studente:%d %s %d\n", buffer.nascita.giorno, buffer.nascita.mese, buffer.nascita.anno);
 			f=fseek(pf,posizione*sizeof(alunno),SEEK_SET);
@@ -264,7 +265,7 @@ int stampaRecord(char nomeFile[],int posizione)
 /** ****************************************************************************************
 * @brief <controlla la posizione del record chiesto all'utente e modifica gli errori
 * @param (char fileName[], int posizione)
-*																						// non corregge il record, calcolo media sbagliata
+*																						// non corregge il record.
 * @author Andrea Tansella
 * @data 01/12/22
 */
@@ -272,19 +273,20 @@ int correggiRecord(char nomefile[], int posizione)
 {
 									
 	alunno buffer;										//dichiarazione di un record
-	int n,f,b,j,a;											//interi utilizzato per funzionare di funzioni di file
+	int n,f,b,j,a;
+	a=stampaRecord(nomefile,posizione);	
+	if(a==-1){									//se il record non esiste, usciamo restituendo -1
+		return -1;
+	}										//interi utilizzato per funzionare di funzioni di file
 	FILE* pf;											
-	pf=fopen(nomefile,"rb");									
+	pf=fopen(nomefile,"rb+");									
 	if(pf!=0)									
 	{
-		n=fseek(pf,posizione*sizeof(buffer),SEEK_SET);	//posiziona il puntatore all'inizio grazie al SEEK_SET
+		n=fseek(pf,posizione*sizeof(buffer),SEEK_SET);	//posiziona il puntatore sul record da correggere
 									
-		
-			f=fread(&buffer,sizeof(buffer),1,pf);		//tira fuori il record dal file per lavorarci sopra 
-			if(f!=0)
-			{
-				a=stampaRecord(nomefile,posizione);
 				printf("inserisci le correzioni");
+				printf("inserisci la matricola\n");
+				scanf("%d",&buffer.matricola);
 				printf("\ninserisci cognome:");
 				scanf("%s", buffer.cognome);
 				printf("inserisci data di nascita:\n");
@@ -301,17 +303,17 @@ int correggiRecord(char nomefile[], int posizione)
 					scanf("%d",&buffer.voti[j]);			
 				}                              
 				printf("\n");
-				n=fwrite(&buffer,sizeof(buffer),1,pf);//sovrascrive il record esistente con il record corretto
-				fclose(pf);							//chude il file
 				
-			}
-				else														
-				{
-				printf("\nil file non puo'essere aperto\n");
-				}
-		
-
+				n=fwrite(&buffer,sizeof(buffer),1,pf);//sovrascrive il record esistente con il record corretto
+			fclose(pf);							//chude il file
+				
 	}
+	else														
+	{
+		printf("\nil file non puo'essere aperto\n");
+		return -1;
+	}
+	return 0;
 }
 /** ****************************************************************************************
 * @brief restituisce il numero di record
