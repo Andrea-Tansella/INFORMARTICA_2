@@ -97,4 +97,4 @@ int main(){
 	cout<<"Secondo Oggetto:"<<endl;
 	f2.stampa();
 	system("pause");
-}
+}					
