@@ -38,7 +38,8 @@ class LED {
   		inverti();
     }
        }
-  void ledTest(int numeroTest){
+  void ledTest(int numeroTest){//testare le funzionalità della classe LED
+  
   Lampeggio(numeroTest);
   }
 };
