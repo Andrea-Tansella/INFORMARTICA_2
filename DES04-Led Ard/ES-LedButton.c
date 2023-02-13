@@ -1,4 +1,5 @@
 
+
 // Classe LED
 class Led {
   private:
@@ -15,7 +16,7 @@ class Led {
     // Metodo per accendere il LED
     void accendi() {
       digitalWrite(pin, HIGH);
-     statoLed=HIGH;
+      statoLed=HIGH;
     }
 
     // Metodo per spegnere il LED
@@ -33,69 +34,69 @@ class Led {
   
   void Lampeggio(int nrLampeggi){
     for(int i=0;i<nrLampeggi;i++)
-    {	spegni();
-  		delay(500);
+    {	
+      	spegni();
+  		delay(200);
   		inverti();
+  		delay(200);
     }
-       }
-  void ledTest(int numeroTest){
-  Lampeggio(numeroTest);
+  }
+  
+  void test(int numeroTest){
+  	Lampeggio(numeroTest);
   }
 };
 
 
 class Pulsante{ 
    private:
-    int pin; // Pin del LED
-	
+    int pin; // Pin del pulsante
   
   public:
     // Costruttore: imposta la modalità del pin del LED come output
     Pulsante(int p) {
       pin = p;
-      pinMode(pin, OUTPUT);
+      pinMode(pin, INPUT_PULLUP);
     }
   
  	int press(){
-	return digitalRead(pin);  
+		return ! digitalRead(pin);  
   	}
     
     
   	int click(){
-	if(press())
-    {
-      while(press());
-      return 1;
- 	}
-  	else
-    {
-      return 0;
-    }
+      if(press())
+      {
+        while(press());
+        return 1;
+      }
+      else
+      {
+        return 0;
+      }
     }
 };
 
 
 // Crea un oggetto LED sulla porta 12 e 13
-  Led ledrosso(12);
-  Led ledblu(13);
-  Pulsante button(2);
+Led ledrosso(12);
+Led ledblu(13);
+Pulsante button(2);
 
 void setup() { // Inizializzazione 
+ 	ledrosso.Lampeggio(2);
+ 	ledblu.Lampeggio(3);
 	ledrosso.accendi();
     ledblu.spegni();
- // ledrosso.Lampeggio(10);
- // ledblu.Lampeggio(5);
 }
 
-void loop() { // Loop infinito
+//Loop infinito
+void loop() { 
  
-if(button.press())
-{
-  ledrosso.inverti();
- // ledblu.inverti();
-}
-
+  if(button.click())
+  {
+    ledrosso.inverti();
+    ledblu.inverti();
+  }
 }   
-
-
 
