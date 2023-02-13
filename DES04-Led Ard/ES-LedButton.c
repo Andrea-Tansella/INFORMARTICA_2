@@ -59,12 +59,12 @@ class Pulsante{
       pinMode(pin, INPUT_PULLUP);
     }
   
- 	int press(){
+ 	int press(){   //il tatso viene tenuto premuto
 		return ! digitalRead(pin);  
   	}
     
     
-  	int click(){
+  	int click(){            // il tasto viene premuto e subito rilasciato
       if(press())
       {
         while(press());
