@@ -1,4 +1,11 @@
-
+/*** ****************************************************************************************
+* mainpage esercizi_classeLED1
+*
+* @brief esecitazione su classe LED arduino
+* 
+* @author Andrea Tansella
+* @date <27/02/23> 
+*/
 // Classe LED
 class LED {
   private:
