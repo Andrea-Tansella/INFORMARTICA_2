@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<?php
+// Controlla se i dati del form sono stati inviati tramite il metodo POST
+if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+{    $error = 0; // Variabile impostata a zero per indicare che non ci sono problemi
+
+// controlla se il nome e stato inserito e rispetti il pattern
+    if (!empty($_POST["nome"])) {0
+        $nome = $_POST["nome"];
+        if (!preg_match("/^[a-zA-Z]+$/", $nome)) {
+            echo "Errore, pattern del nome errato. Riprova.<br>";
+            $error = 1;
+        }
+    } else {
+        echo "Errore, campo Nome obbligatorio da completare.<br>";
+        $error = 1;
+    }
+// controlla se il cognome e stato inseritol e rispetti il pattern
+    if (!empty($_POST["cognome"])) {
+        $cognome = $_POST["cognome"];
+        if (!preg_match("/^[a-zA-Z]+$/", $cognome)) {
+            echo "Errore, pattern del cognome errato. Riprova.<br>";
+            $error = 1;
+        }
+    } else {
+        echo "Errore, campo Cognome obbligatorio da completare.<br>";
+        $error = 1;
+    }
+// controlla se la data e stata inserita
+    if (!empty($_POST["data"])) {
+        $data = $_POST["data"];
+    } else {
+        echo "Errore, campo Data di Nascita obbligatorio da completare.<br>";
+        $error = 1;
+    }
+// controlla se il codice fiscale sia stato inserito e rispetti il pattern
+    if (!empty($_POST["codice_fiscale"])) {
+        $cod_fiscale = $_POST["codice_fiscale"];
+        if (!preg_match("/^[A-Z]{6}[0-9]{2}[A-Z]{1}[0-9]{2}[A-Z]{1}[0-9]{3}[A-Z]{1}$/", $cod_fiscale)) {
+            echo "Errore, codice fiscale errato. Riprova.<br>";
+            $error = 1;
+        }
+    } else {
+        echo "Errore, campo Codice Fiscale obbligatorio da completare.<br>";
+        $error = 1;
+    }
+// controlla se la mail e stata inserita e sia valida
+    if (!empty($_POST["email"])) {
+        $email = $_POST["email"];
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo "Errore, l'indirizzo email inserito non è valido.<br>";
+            $error = 1;
+        }
+    } else {
+        echo "Errore, campo Email obbligatorio da completare.<br>";
+        $error = 1;
+    }
+// controlla se il numero di telefono e stato inserito e rispetti il pattern
+    if (!empty($_POST["numero_telefono"])) {
+        $num_telefono = $_POST["numero_telefono"];
+        if (!preg_match("/^[0-9]{10}$/", $num_telefono)) {
+            echo "Errore, numero di telefono errato. Riprova.<br>";
+            $error = 1;
+        }
+    } else {
+        echo "Errore, campo Numero di Telefono obbligatorio da completare.<br>";
+        $error = 1;
+    }
+// controlla se l'indirizzo e stato inserito e rispetti il pattern
+    if (!empty($_POST["indirizzo"])) {
+        $indirizzo = $_POST["indirizzo"];
+        if (!preg_match("/^[a-zA-Z\s0-9]+$/", $indirizzo)) {
+            echo "Errore, pattern dell'indirizzo errato. Riprova.<br>";
+            $error = 1;
+        }
+    } else {
+        echo "Errore, campo Indirizzo obbligatorio da completare.<br>";
+        $error = 1;
+    }
+// controlla se il nickname e stato inserito,poi controlla se e uguale al cognome o nome e infine se rispetta il pattern
+    if (!empty($_POST["nickname"])) {
+        $nickname = $_POST["nickname"];
+        if ($nickname == $nome || $nickname == $cognome) {
+            echo "Errore, il nickname deve essere diverso da nome e cognome.<br>";
+            $error = 1;
+        }
+        if (!preg_match("/^[a-zA-Z]+$/", $nickname)) {
+            echo "Errore, pattern del nickname errato. Riprova.<br>";
+            $error = 1;
+        }
+    } else {
+        echo "Errore, campo Nickname obbligatorio da completare.<br>";
+        $error = 1;
+    }
+// controlla se la password prima e stata inserita, dopo se rispetta il pattern
+    if (!empty($_POST["password"])) {
+        $password = $_POST["password"];
+        if (!preg_match("/^[a-zA-Z0-9@#+-%]{8,}$/", $password)) {
+            echo "Errore, pattern della password errato. Riprova.<br>";
+            $error = 1;
+        }
+    } else {
+        echo "Errore, campo Password obbligatorio da completare.<br>";
+        $error = 1;
+    }
+
+    // Controllo e rimozione di eventuali spazi superflui
+    $nome = trim($nome);
+    $cognome = trim($cognome);
+    $cod_fiscale = trim($cod_fiscale);
+    $email = trim($email);
+    $num_telefono = trim($num_telefono);
+    $indirizzo = trim($indirizzo);
+    $data = trim($data);
+
+    // Controllo se tutto è andato a buon fine
+    if ($error === 0) {
+        displayData();
+    } else {
+        echo "Qualcosa è andato storto, riprova.";
+        displayForm();
+    }
+} else {
+    displayForm();
+}
+//controllo dei dati che siano stati inseriti senza strani caratteri speciali
+$nome = htmlspecialchars($nome);
+$cognome = htmlspecialchars($cognome);
+$cod_fiscale = htmlspecialchars($cod_fiscale);
+$nickname = htmlspecialchars($nickname);
+$num_telefono = htmlspecialchars($num_telefono);
+$indirizzo = htmlspecialchars($indirizzo);
+$data = htmlspecialchars($data);
+
+
+// Presenta a video il form
+function displayForm()
+{
+    echo '<form method="POST" action="">
+    Nome: <input type="text" name="nome" placeholder="Nome" pattern="[a-zA-Z\s]+" required><br>
+    Cognome: <input type="text" name="cognome" placeholder="Cognome" pattern="^[a-zA-Z\s]+$" required><br>
+    Data di Nascita: <input type="date" name="data" required><br>
+    Codice Fiscale: <input type="text" name="codice_fiscale" placeholder="RSSMRA85T10A562S" pattern="^[A-Z]{6}[0-9]{2}[A-Z]{1}[0-9]{2}[A-Z]{1}[0-9]{3}[A-Z]{1}$" required><br>
+    Email: <input name="email" placeholder="name@example.com" type="email" required><br>
+    Numero Telefono: <input type="tel" name="numero_telefono" placeholder="3331234567" pattern="[0-9]{10}" required><br>
+    Indirizzo: <input type="text" name="indirizzo" placeholder="Via Giuseppe Verdi<br>
+    Nickname: <input type="text" name="nickname" placeholder="nickname" pattern="[a-zA-Z\s]+" required><br>
+    Password: <input type="password" name="password" placeholder="password" pattern="[a-zA-Z0-9@#$%^&+=!*_]{8,}" required><br>
+    <input type="submit" value="Registrati">
+</form>';
+}
+function displayData () {
+    global $nome; global $cognome; global $data; global $cod_Fiscale; global $email; global $cellulare; global $indirizzo; global $nickname; global $password;
+    echo "Nome: $nome <br>";
+    echo "Cognome: $cognome <br>";
+    echo "Data di nascita: $data <br>";
+    echo "Codice fiscale: $cod_Fiscale <br>";
+    echo "Email: $email <br>";
+    echo "numero Telefono: $num_telefono<br>";
+    echo "Indirizzo: $indirizzo <br>";
+    echo "Nickname: $nickname <br>";
+    echo "Password: $password <br>";
+}
+?>
+</body>
+</html>
