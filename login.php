@@ -10,7 +10,7 @@
 // inizio della sessione
 session_start();
 //consente di definire una stringa di testo multiriga in modo più leggibile rispetto all'utilizzo di virgolette o apici.
-$logIn=<<<"LOGIN" 
+$logIn=<<<LOGIN
     <h1>Richiesta credenziali per accesso</h1>
     <p>Dati: username = andrea, password=1234</p>   
     <form method="POST" action="login.php">
