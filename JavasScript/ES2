@@ -1,0 +1,32 @@
+
+N1
+let larghezza = prompt("inserisci la larghezza");
+let altezza = prompt("inserisci l'altezza");
+let lunghezza = prompt("inserisci la lunghezza");
+
+let volume = larghezza*altezza*lunghezza;
+alert("il volume della scatola e di:" + volume);
+
+N2
+let persona = {};
+
+persona.nome = prompt("inserisci il nome");
+persona.cognome = prompt("inserisci il cognome");
+persona.eta= prompt("inserisci l'eta");
+
+console.log(persona);
+
+N3
+let m =prompt("inserisci il coefficiente angolare");
+let x = -1;
+let c = prompt("inserisci il valore dell'intersezione con gli assi cartesiani");
+
+let y = m*x+c;
+console.log("i coefficienti della retta y con ascissa -1 e di:"+ y);
+
+let b=prompt("inserisci il coefficiente angolare");
+let a = 10;
+let l = prompt("inserisci il valore dell'intersezione con gli assi cartesiani");
+
+let z = b*a+l;
+console.log("i coefficienti della retta y con ascissa 10 e di:"+ z);
