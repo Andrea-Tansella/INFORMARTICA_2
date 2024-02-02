@@ -5,11 +5,11 @@ for (let i = 100; i >= 0; i -= 20) {
 
 ES2
 let Libro = {
-    Titolo : 1984,
-    Autore : "George Orwell",
-    AnnoPubblicazione : 1949,
-    Genere : "Distopico",
-    NumeroPagine : 320
+    Titolo : "Shining",
+    Autore : "Stephen King",
+    AnnoPubblicazione : 1977,
+    Genere : "Romanzo, Horror fiction, Horror psicologico, Fiction gotica, Narrativa soprannaturale",
+    NumeroPagine : 592
 };
 for (let key in Libro) {
     console.log(`${key} -> ${Libro[key]}`);
