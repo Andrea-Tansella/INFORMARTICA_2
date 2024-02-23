@@ -1,0 +1,69 @@
+es1
+let num1 = prompt("Inserisci il primo numero:");
+let num2 = prompt("Inserisci il secondo numero:");
+let operatore = prompt("Inserisci un'operazione matematica tra '+', '-', '*', '/', '**':");
+let risultato;
+parseInt(num1); // trasforma le variabili in interi
+parseInt(num2);
+const operazioni= { //oggetto operazioni
+
+        somma:(a, b) => {
+            return `${a} + ${b} = ${a+b}`;
+        },
+        sottrazione:(a, b) => {
+            return `${a} - ${b} = ${a-b}`
+        },
+        moltiplicazione:(a, b) => {
+            return `${a} * ${b} = ${a*b}`
+        },
+        divisione:(a, b) => {
+            if(b!=0) return `${a} / ${b} = ${a/b}`;
+            return `Cannot Divide by Zero!!!`;
+        },
+        potenza:(a,b) => {
+        return `${a} ** ${b} = ${a**b}`;
+        }   
+
+    }
+
+    if (!Number.isNaN(num1) && !Number.isNaN(num2)) {
+            switch(operatore)
+            {
+   
+            case '+':
+               risultato=operazioni.somma(1*num1,num2*1);
+                break;
+            case '-':
+                risultato=operazioni.sottrazione(1*num1,num2*1);
+                break;
+            case '*':
+                risultato=operazioni.moltiplicazione(1*num1,num2*1);
+                break;
+            case '/':
+                    risultato=operazioni.divisione(1*num1,num2*1);
+                  break;
+            case '**':
+                risultato=operazioni.potenza(1*num1,num2*1);
+                break;
+             }
+             console.log(risultato);
+        }
+
+
+es 2
+
+let num1 = prompt("Inserisci il numero");
+
+function inverti_cifre(num1)
+{
+
+    let stringa = " " ;                          // ciclo che permette di scorrere il numero e restituisce il risultato in una striga
+    for( let i = num1.length-1; i >= 0; i-- )
+    {
+           stringa+= num1[i];  
+    }
+        return parseInt(stringa);
+              
+}
+      
+    console.log(inverti_cifre(num1));
