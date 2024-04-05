@@ -1,0 +1,49 @@
+// Cambia il titolo della finestra del browser
+window.document.title = "Nuovo Titolo";
+
+// Mostra un popup di avviso
+window.alert("Questo è un messaggio di avviso!");
+
+// Chiede all'utente di inserire dati
+let nome = window.prompt("Inserisci il tuo nome:", "Nome di default");
+
+// SConferma una scelta dell'utente
+let conferma = window.confirm("Sei sicuro di voler procedere?");
+console.log(`Ciao ${nome}, conferma=${conferma}`);
+
+// utilizzo dell'oggetto Navigator
+console.log("Nome del browser:", navigator.appName);
+console.log("User-Agent:", navigator.userAgent);
+
+// utilizzo dell'oggetto Location
+console.log("URL corrente:", location.href);
+
+//  utilizzo dell'oggetto History
+console.log("Numero di pagine nella cronologia:", history.length);
+
+//  utilizzo dell'oggetto Screen
+console.log("Larghezza dello schermo:", screen.width);
+console.log("Altezza dello schermo:", screen.height);
+
+es2
+
+console.log("User Agent:", navigator.userAgent);
+console.log("Platform:", navigator.platform);
+console.log("Preferred Language:", navigator.language);
+console.log("Cookies Enabled:", navigator.cookieEnabled);
+console.log("Online Status:", navigator.onLine);
+
+//  utilizzo della geolocalizzazione
+if ("geolocation" in navigator) {
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      console.log("Latitude:", position.coords.latitude);
+      console.log("Longitude:", position.coords.longitude);
+    },
+    (error) => {
+      console.error("Geolocation error:", error.message);
+    }
+  );
+} else {
+  console.log("Geolocation not supported");
+}
